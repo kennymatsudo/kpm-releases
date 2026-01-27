@@ -6,40 +6,15 @@ A developer's project cockpit for managing projects from planning through execut
 
 Download the latest version from the [Releases](https://github.com/kennymatsudo/kpm-releases/releases) page.
 
-| Platform | Download |
-|----------|----------|
-| macOS (Apple Silicon) | `KPM-*-arm64.dmg` |
-| macOS (Intel) | `KPM-*-x64.dmg` |
-| Windows | `KPM-*-Setup.exe` |
-| Linux | `KPM-*.AppImage` or `KPM-*.deb` |
+**Requirements:** macOS on Apple Silicon (M1/M2/M3/M4)
 
 ## Installation
 
-### macOS
-
-1. Download the `.dmg` file for your Mac (arm64 for Apple Silicon, x64 for Intel)
+1. Download the `.dmg` file from the latest release
 2. Open the DMG and drag KPM to Applications
 3. **First launch:** Right-click the app → **Open** → Click **Open** in the dialog
 
    > The app is not notarized, so macOS will show a warning on first launch. This is a one-time step.
-
-### Windows
-
-1. Download the `.exe` installer
-2. Run the installer and follow the prompts
-
-### Linux
-
-**AppImage:**
-```bash
-chmod +x KPM-*.AppImage
-./KPM-*.AppImage
-```
-
-**Debian/Ubuntu:**
-```bash
-sudo dpkg -i KPM-*.deb
-```
 
 ## Auto-Updates
 
