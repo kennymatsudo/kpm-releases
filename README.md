@@ -1,119 +1,101 @@
-# KPM - Planning Workbench
+# KPM
 
-A developer's project cockpit for managing work from discovery through execution.
+A planning workbench for developers.
 
 ## The Problem KPM Solves
 
-**Planning files don't belong in source code.** Where do project breakdowns, working notes, and task lists live? A separate folder loses the connection to code. Files in the repo risk accidental commits and clutter `.gitignore`.
+- **Context resets every time you switch tools.** Research in one place, plan in another, track in a third, code in a fourth. Each transition starts cold.
+- **Trackers are too coarse for real work.** "Add user auth" is one Jira ticket, but actually implementing it means figuring out eight separate things. Jira tracks the ticket — not the thinking underneath it.
+- **AI doesn't know your project.** Every chat session starts from scratch — no awareness of your plan, your docs, or what you've already decided.
+- **Planning files don't belong in your repo.** Task breakdowns and working notes end up in random markdown files, cluttering `.gitignore` or risking accidental commits.
+- **Working on multiple things means juggling branches.** Switching between features means stashing, checking out, re-orienting. Context gets lost every time.
 
-**Context resets between workflow phases.** Discovery happens in one tool, planning in another, execution in a third. Each phase starts cold—you re-explain, re-establish context, lose the thread.
-
-**Jira operates at the wrong level.** Org trackers optimize for stakeholder visibility. Developers need granularity that matches how they actually think about code. "Add user auth" in Jira is actually 8 things you need to track.
-
-KPM is a **context continuity layer** that keeps your thinking connected across discovery, planning, and execution.
+KPM gives you a single place where your plan, your docs, your Jira tickets, and your code all live together. Everything stays connected so nothing gets re-explained or lost.
 
 ## Download
 
-Download the latest version from the [Releases](https://github.com/kennymatsudo/kpm-releases/releases) page.
+Get the latest version from the [Releases](https://github.com/kennymatsudo/kpm-releases/releases) page.
 
 **Requirements:** macOS on Apple Silicon (M1/M2/M3/M4)
 
-## Installation
+## Getting Started
 
-1. Download the `.dmg` file from the latest release
-2. Open the DMG and drag KPM to Applications
+1. Download the `.dmg` from the latest release
+2. Drag KPM to Applications
 3. **First launch:** Right-click the app > **Open** > Click **Open** in the dialog
 
-   > The app is not notarized, so macOS will show a warning on first launch. This is a one-time step.
+**You'll also need:**
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code/overview) — `npm install -g @anthropic-ai/claude-code`
+- An Anthropic API key or Claude Max subscription
 
-## Requirements
+## Features
 
-- **Claude Code CLI** - Install with `npm install -g @anthropic-ai/claude-code`
-- **Anthropic API key** or Claude Max subscription
+### Shared Context Across Everything
 
-## Core Features
+This is the core idea. Your plan, your project documents, your Jira tickets, and your code are all accessible from every part of KPM. When you're chatting with Claude about an approach, it can read your plan and your code. When you kick off a dev session, Claude Code already has your task breakdown and project docs. Context flows between steps instead of getting copy-pasted or lost.
 
-### Plan View
-Visual canvas for breaking down work into a three-level hierarchy: Project > Feature > Task. Drag cards to organize, set dependencies, track status. Your breakdown lives in KPM's database—connected to repos but not inside them.
+### AI-Driven Workflow
 
-### Workspace View
-Chat-first interface with Claude for discovery and planning. Claude has context about your project, your plan, and your code. Ask questions, explore approaches, draft plans—context accumulates instead of resetting.
+Claude can handle most of what you'd otherwise do manually — explore your codebase, create plan items, break features into tasks, set dependencies, update statuses, start dev sessions. You work through a chat interface and approve the changes Claude proposes. Or skip the chat and do it all by hand. Both work.
+
+### Visual Planning
+
+Break work into projects, features, and tasks. View them on a canvas, in a tree, or on a kanban board. Drag to organize, set dependencies, group related items. Your breakdown stays in KPM's database — connected to your repos but not cluttering them.
 
 ### Development Sessions
-When a task is ready for implementation, Claude can propose a dev session. KPM creates an isolated git worktree, spawns Claude Code in a terminal, and passes all the context (task description, code refs, sub-tasks). Work stays sandboxed until you're ready to merge.
 
-### Jira Integration
-Import issues from Jira, sync status back when ready. KPM is your local source of truth while working; Jira remains the team's source of truth.
+Start a dev session and KPM sets up an isolated git worktree, launches Claude Code, and feeds it everything relevant — the task, sub-tasks, code references, and your project docs. Claude starts working in its own branch while your main repo stays clean.
+
+Run multiple sessions at once across different features. Each gets its own terminal, branch, and worktree.
+
+### Agent Teams
+
+Switch to **thorough mode** and Claude doesn't just implement — it gets reviewed. After writing the code, a team of specialized agents runs automatically:
+
+- **Design** — architecture, API contracts, pattern adherence
+- **Test** — coverage gaps, regressions, flaky patterns
+- **Security** — injection, auth issues, input validation
+- **Synthesizer** — deduplicates across reviewers, classifies severity, prioritizes fixes
+- **Readability** — naming, structure, clarity
+
+If critical issues are found, Claude fixes them and the reviewers run again. Reviewer prompts are customizable per-project.
+
+### Jira Sync
+
+Import issues from Jira, break them down at whatever granularity you actually need, then sync status back when you're done. You can also export new plan items to Jira as tickets — so work that starts in KPM can flow back into your team's tracker without manual re-entry. KPM handles conflict detection so nothing gets overwritten. Jira stays the team's source of truth — KPM is yours.
 
 ### Confluence Sync
-Bidirectional sync between local documents and Confluence pages. Draft locally, push when ready.
 
-## Use Cases
+Link documents to Confluence pages. Edit locally in markdown, push when ready. Bidirectional sync with conflict resolution.
 
-### Breaking Down a Large Feature
-You have "Implement OAuth" in Jira. That's actually: research providers, set up routes, handle token refresh, write tests, handle edge cases. Break it down in KPM, track your real progress, update Jira once when done.
+### Inbox
 
-### Exploring Before Planning
-You need to understand how the auth system works before you can plan changes. Use Workspace to explore with Claude—read code, ask questions, take notes. When you understand the scope, draft a plan. Your discoveries become actionable tasks.
+Capture thoughts quickly from anywhere in the app. KPM enhances your notes in the background — expanding shorthand, categorizing items — so they're ready to act on when you come back to them.
 
-### Parallel Implementation Tracks
-Working on multiple independent features? Each can have its own dev session running in an isolated worktree. Switch between terminals, keep work separate until ready to review.
-
-## Example Workflows
-
-### Workflow 1: Discovery to Execution
+## How It Fits In
 
 ```
-1. Create project in KPM, link your repo
-2. Open Workspace, explore the codebase with Claude
-   "What's the current auth flow? Where are tokens validated?"
-3. When you understand the scope, ask Claude to draft a plan
-4. Review the draft, promote it to real plan items
-5. Work through tasks—mark complete as you go
+ Your Team's Tracker (Jira / Linear)
+          ^
+          | sync when ready
+          |
+ KPM — your working space
+   explore, plan, break down, track
+          ^
+          | direct access
+          |
+ Your Code (repos, Claude Code, IDE)
 ```
 
-### Workflow 2: Jira-Driven Development
+KPM sits between your code and your team's tracker. Work at whatever level of detail you need, then surface results upward when ready.
 
-```
-1. Import Jira issue into KPM
-2. Break it down into sub-tasks (Jira doesn't need this granularity)
-3. For each task, discuss implementation with Claude in Workspace
-4. When ready, start a dev session—Claude Code implements in isolated worktree
-5. Review changes, commit, push
-6. Sync final status back to Jira
-```
+## Typical Workflow
 
-### Workflow 3: Parallel Feature Development
-
-```
-1. Three features to implement, all independent
-2. Create plan items for each
-3. Start dev session on Feature A—runs in its own worktree/branch
-4. While Claude works on A, start session on Feature B
-5. Switch between terminals, review progress
-6. Each feature stays isolated until you're ready to merge
-```
-
-## How It Fits Together
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Organization Level                          │
-│                   Jira / Linear (team source of truth)          │
-└─────────────────────────────────────────────────────────────────┘
-                              ↑ sync when ready
-┌─────────────────────────────────────────────────────────────────┐
-│                     Developer Level                             │
-│                        KPM (this tool)                          │
-│  • Discovery & exploration    • Progress tracking               │
-│  • Planning & breakdown       • Jira/Confluence sync            │
-└─────────────────────────────────────────────────────────────────┘
-                              ↑ direct access
-┌─────────────────────────────────────────────────────────────────┐
-│                       Code Level                                │
-│                   Claude Code + IDE + Repos                     │
-└─────────────────────────────────────────────────────────────────┘
-```
+1. **Link your repos** and create a project
+2. **Explore** — chat with Claude about the codebase, read code, understand scope
+3. **Plan** — break work down into features and tasks, manually or through chat
+4. **Build** — start dev sessions that run Claude Code in isolated worktrees
+5. **Ship** — review changes, sync status back to Jira
 
 ## Issues
 
